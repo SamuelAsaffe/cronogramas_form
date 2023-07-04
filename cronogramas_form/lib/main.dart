@@ -11,7 +11,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Form',
+      title: 'FormAceutica',
       theme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.indigo,
@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cadastro de Música"),
+        title: const Text("Formulário de Recesso"),
         backgroundColor: Colors.indigo,
       ),
       body: Container(
@@ -57,8 +57,9 @@ class _HomeState extends State<Home> {
               TextFormField(
                 controller: _titulocontroller,
                 decoration: const InputDecoration(
-                  labelText: "Título: ",
-                ),
+                    labelText: "Título: ",
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.abc)),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Campo obrigatório";
