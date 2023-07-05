@@ -18,10 +18,10 @@ class _PaginaState extends State<Pagina> {
           // backgroundColor: Colors.blue,
         ),
         body: Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.fromLTRB(5, 6, 5, 6),
             child: Center(
-                child: SingleChildScrollView(
-              child: ListView(),
+              child: SingleChildScrollView(
+                child: ListView(),
             ))));
   }
 }
