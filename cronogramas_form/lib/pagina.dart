@@ -14,17 +14,15 @@ class _PaginaState extends State<Pagina> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( 
-        title          : const Text("Lista de..."),
-        backgroundColor: Colors.blue,
+        title          : const Text("Lista de cursos"),
+        // backgroundColor: Colors.blue,
       ),
       body: Container(
-        padding: EdgeInsets.all(16),
         child  : Center(
-          child: SingleChilScrolView(
-            child: Center{ListView
-            },
+          child: SingleChildScrollView(
+            child: ListView(),
           )
         )
-      ))
+      )
   }
 }
