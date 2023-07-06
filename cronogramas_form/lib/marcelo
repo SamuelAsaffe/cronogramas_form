@@ -1,0 +1,131 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Date Picker',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Home(),
+    );
+  }
+}
+
+class Holiday {
+  final String description;
+  final DateTime date;
+  final String type;
+
+  Holiday(this.description, this.date, this.type);
+}
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final format = DateFormat("dd-MM-yyyy");
+
+  List<Holiday> holidays = [
+    Holiday('Feriado 1', DateTime(2023, 1, 1), 'Motivo 1'),
+    Holiday('Feriado 2', DateTime(2023, 12, 25), 'Motivo 2'),
+    // Adicione mais feriados conforme necessário
+  ];
+
+  Map<int, DateTime?> selectedDates = {};
+
+  Future<void> _selectDate(BuildContext context, int index) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() {
+        selectedDates[index] = picked;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Date Picker'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 16),
+            Text(
+              'TABELA RECESSO',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columns: const <DataColumn>[
+                  DataColumn(
+                    label: Text('Descrição Campo'),
+                  ),
+                  DataColumn(
+                    label: Text('Descrição'),
+                  ),
+                  DataColumn(
+                    label: Text('Tipo de Dado'),
+                  ),
+                  DataColumn(
+                    label: Text('Data'),
+                  ),
+                  DataColumn(
+                    label: Text(''),
+                  ),
+                ],
+                rows: List.generate(holidays.length, (index) {
+                  final holiday = holidays[index];
+                  final selectedDate = selectedDates[index];
+                  String descricaoCampo = 'Feriado Nacional';
+                  String descricao = holiday.description;
+                  String tipoDado = 'Motivo de não haver aula';
+
+                  if (selectedDate != null) {
+                    final matchingHoliday = holidays.firstWhere(
+                      (holiday) => holiday.date == selectedDate,
+                      orElse: () => Holiday('', DateTime.now(), ''),
+                    );
+                    descricaoCampo = matchingHoliday.description;
+                    descricao = matchingHoliday.description;
+                    tipoDado = matchingHoliday.type;
+                  }
+
+                  return DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text(descricaoCampo)),
+                      DataCell(Text(descricao)),
+                      DataCell(Text(tipoDado)),
+                      DataCell(Text(selectedDate != null ? format.format(selectedDate) : '')),
+                      DataCell(ElevatedButton(
+                        onPressed: () => _selectDate(context, index),
+                        child: Text('Select Date'),
+                      )),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
